@@ -1,412 +1,222 @@
-/* ------------------------------------------------------------------ */
-/* Tokens                                                              */
-/* ------------------------------------------------------------------ */
-.station {
-  --charcoal: #171512;
-  --panel: #29241d;
-  --panel-light: #3a3226;
-  --dial-face: #efe7d8;
-  --ink: #211d18;
-  --brass: #c9a227;
-  --brass-dim: #8b7126;
-  --teal: #4f8579;
-  --cream: #ece4d4;
-  --muted: #948a76;
-  --danger: #c1583f;
-
-  --font-label: 'Zilla Slab', Georgia, 'Times New Roman', serif;
-  --font-data: 'Space Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
-
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  box-sizing: border-box;
-  background:
-    radial-gradient(ellipse at 50% -10%, rgba(201, 162, 39, 0.08), transparent 55%),
-    linear-gradient(180deg, #1c1914 0%, var(--charcoal) 100%);
-  font-family: var(--font-label);
-  color: var(--cream);
-}
-
 * {
   box-sizing: border-box;
 }
 
-/* ------------------------------------------------------------------ */
-/* Panel shell                                                         */
-/* ------------------------------------------------------------------ */
-.panel {
-  position: relative;
-  width: min(100%, 880px);
-  background: linear-gradient(155deg, var(--panel-light) 0%, var(--panel) 45%, #241f19 100%);
-  border-radius: 26px;
-  padding: 36px 40px 28px;
-  border: 1px solid rgba(201, 162, 39, 0.18);
-  box-shadow:
-    0 30px 60px -25px rgba(0, 0, 0, 0.7),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.4);
-}
-
-.panel::before {
-  /* subtle brushed-metal grain */
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 26px;
-  pointer-events: none;
-  opacity: 0.5;
-  background-image: repeating-linear-gradient(
-    100deg,
-    rgba(255, 255, 255, 0.015) 0px,
-    rgba(255, 255, 255, 0.015) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-}
-
-.panel::after {
-  /* corner rivets, a small period-accurate detail */
-  content: '';
-  position: absolute;
-  inset: 14px;
-  border-radius: 18px;
-  border: 1px solid rgba(239, 231, 216, 0.06);
-  pointer-events: none;
-}
-
-/* ------------------------------------------------------------------ */
-/* Header / plate                                                      */
-/* ------------------------------------------------------------------ */
-.panel-header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
-  padding-bottom: 24px;
-  margin-bottom: 24px;
-  border-bottom: 1px solid rgba(239, 231, 216, 0.1);
-}
-
-.plate-eyebrow {
-  display: inline-block;
-  font-family: var(--font-data);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--brass);
-  margin-bottom: 6px;
-}
-
-.plate-city {
+body {
   margin: 0;
-  font-size: clamp(32px, 5vw, 44px);
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: var(--dial-face);
+  min-height: 100vh;
+  background-image: url(images/fullpage-bg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
 }
 
-.plate-time {
-  margin: 6px 0 0;
-  font-size: 14px;
-  color: var(--muted);
-  font-family: var(--font-data);
-  letter-spacing: 0.02em;
+.container {
+  background-image: url(images/background-night.png);
+  width: min(95%, 1100px);
+  background-position: center;
+  border-radius: 70px;
+  align-items: center;
+  gap: 20px;
+  font-size: 30px;
+  padding: 50px 70px;
+  color: azure;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.controls {
+.top {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  min-height: 140px;
+}
+
+p {
+  color: #ced4da;
+  font-size: 25px;
+}
+
+.temp {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.temp h1 {
+  font-size: 80px;
+  font-weight: lighter;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
-.search-slot {
+.buttons input {
+  background-color: lightblue;
+  border: none;
+  border-radius: 10px;
+  width: 200px;
+  max-width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  font-size: 17px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.search,
+.reset,
+.location {
+  background-color: lightblue;
+  border: none;
+  border-radius: 10px;
+  padding: 0 14px;
+  cursor: pointer;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.search:hover,
+.reset:hover,
+.location:hover {
+  filter: brightness(0.95);
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+  font-size: 25px;
+}
+
+.icon {
+  width: 90px;
+  height: 90px;
+  color: azure;
+}
+
+.weather-icon {
   display: flex;
   align-items: center;
-  background: var(--charcoal);
-  border-radius: 12px;
-  border: 1px solid rgba(239, 231, 216, 0.12);
-  padding: 4px 4px 4px 16px;
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-.city-input {
-  background: transparent;
+/* looks like the original text links, but is now a real, working button */
+.unitBtn {
+  background: none;
   border: none;
-  outline: none;
-  color: var(--cream);
-  font-family: var(--font-label);
-  font-size: 15px;
-  width: 160px;
-  padding: 10px 4px;
-}
-
-.city-input::placeholder {
-  color: var(--muted);
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
+  padding: 0;
+  color: #ced4da;
+  font-size: 25px;
+  font-family: Arial, Helvetica, sans-serif;
   cursor: pointer;
-  color: var(--ink);
-  background: linear-gradient(180deg, #ddb84a 0%, var(--brass) 55%, var(--brass-dim) 100%);
-  transition: transform 0.15s ease, filter 0.15s ease;
+  text-decoration: none;
 }
 
-.btn:hover {
-  filter: brightness(1.08);
+.unitBtn.active {
+  color: azure;
+  text-decoration: underline;
 }
 
-.btn:active {
-  transform: translateY(1px);
+.error {
+  color: #ff8787;
+  font-size: 20px;
 }
 
-.btn:focus-visible {
-  outline: 2px solid var(--dial-face);
-  outline-offset: 2px;
+.placeholder {
+  font-size: 20px;
 }
 
-.btn-search {
-  width: 40px;
-  height: 40px;
-  border-radius: 9px;
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid rgba(255, 255, 255, 0.25);
+  border-top-color: azure;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
-.btn-locate {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-}
-
-.status-message {
-  margin: 0 0 20px;
-  padding: 10px 14px;
-  border-radius: 8px;
-  background: rgba(193, 88, 63, 0.12);
-  border: 1px solid rgba(193, 88, 63, 0.4);
-  color: #e0a394;
-  font-family: var(--font-data);
-  font-size: 13px;
-}
-
-/* ------------------------------------------------------------------ */
-/* Deck: gauge + tape readouts                                         */
-/* ------------------------------------------------------------------ */
-.readout-deck {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 32px;
-  align-items: center;
-}
-
-@media (max-width: 640px) {
-  .readout-deck {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    text-align: center;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
-.gauge-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-}
-
-.condition-title {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--dial-face);
-}
-
-.condition-sub {
-  margin: 2px 0 0;
-  font-size: 13px;
-  color: var(--muted);
-  text-transform: capitalize;
-}
-
-/* ------------------------------------------------------------------ */
-/* Gauge                                                                */
-/* ------------------------------------------------------------------ */
-.gauge {
-  position: relative;
-  width: 220px;
-}
-
-.gauge-svg {
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-
-.gauge-track {
-  stroke: rgba(239, 231, 216, 0.12);
-  stroke-width: 6;
-  stroke-linecap: round;
-}
-
-.gauge-value {
-  stroke: var(--brass);
-  stroke-width: 6;
-  stroke-linecap: round;
-  transition: d 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.gauge-tick {
-  stroke: rgba(239, 231, 216, 0.35);
-  stroke-width: 1.5;
-}
-
-.gauge-tick-label {
-  fill: var(--muted);
-  font-family: var(--font-data);
-  font-size: 8px;
-}
-
-.gauge-needle-group {
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.gauge-needle {
-  stroke: var(--teal);
-  stroke-width: 3;
-  stroke-linecap: round;
-}
-
-.gauge-hub {
-  fill: var(--dial-face);
-  stroke: var(--brass-dim);
-  stroke-width: 2;
-}
-
-.gauge-readout {
-  position: absolute;
-  left: 50%;
-  bottom: 18%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: baseline;
-  gap: 3px;
-  font-family: var(--font-data);
-}
-
-.gauge-value-text {
-  font-size: 34px;
-  font-weight: 700;
-  color: var(--dial-face);
-  line-height: 1;
-}
-
-.gauge-unit {
-  font-size: 13px;
-  color: var(--muted);
-}
-
-/* ------------------------------------------------------------------ */
-/* Tape readouts                                                       */
-/* ------------------------------------------------------------------ */
-.tape-column {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
-}
-
-.readout-row {
-  display: grid;
-  grid-template-columns: 32px 1fr auto;
-  align-items: center;
-  gap: 14px;
-}
-
-.readout-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: rgba(239, 231, 216, 0.06);
-  color: var(--brass);
-}
-
-.readout-main {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.readout-label {
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.readout-track {
-  height: 6px;
-  border-radius: 999px;
-  background: rgba(239, 231, 216, 0.08);
-  overflow: hidden;
-}
-
-.readout-fill {
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--brass-dim), var(--brass));
-  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.readout-value {
-  font-family: var(--font-data);
-  font-size: 18px;
-  color: var(--dial-face);
-  min-width: 64px;
-  text-align: right;
-}
-
-.readout-unit {
-  font-size: 12px;
-  color: var(--muted);
-  margin-left: 2px;
-}
-
-/* ------------------------------------------------------------------ */
-/* Footer                                                               */
-/* ------------------------------------------------------------------ */
-.panel-footer {
-  margin-top: 28px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(239, 231, 216, 0.1);
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--font-data);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-/* ------------------------------------------------------------------ */
-/* Motion preference                                                    */
-/* ------------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
-  .gauge-value,
-  .gauge-needle-group,
-  .readout-fill,
-  .btn {
-    transition: none !important;
+  .spinner {
+    animation-duration: 1.6s;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive tweaks - keeps the same look, just scales down cleanly   */
+/* ------------------------------------------------------------------ */
+@media (max-width: 1024px) {
+  .container {
+    padding: 40px 45px;
+    border-radius: 50px;
+    font-size: 26px;
+  }
+
+  .temp h1 {
+    font-size: 64px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 32px 30px;
+    border-radius: 36px;
+  }
+
+  .temp h1 {
+    font-size: 54px;
+  }
+
+  .icon {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+@media (max-width: 375px) {
+  .container {
+    padding: 24px 18px;
+    border-radius: 24px;
+    font-size: 20px;
+  }
+
+  .temp h1 {
+    font-size: 42px;
+  }
+
+  p,
+  .unitBtn,
+  ul {
+    font-size: 18px;
+  }
+
+  .buttons input {
+    width: 100%;
+  }
+
+  .buttons {
+    width: 100%;
   }
 }

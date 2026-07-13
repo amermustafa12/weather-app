@@ -1,152 +1,93 @@
 import { useState } from 'react';
-import Gauge from './components/Gauge';
-import ReadoutBar from './components/ReadoutBar';
-import { IconThermometer, IconHumidity, IconWind, IconLocation, IconSearch } from './components/icons';
 import './App.css';
-
-// NOTE: for a real deployment, move this key server-side or into an env
-// variable so it isn't shipped in the client bundle. Kept inline here since
-// this is a learning / portfolio project.
-const API_KEY = '702199ae130477942968a69f0f7b722b';
+import useWeather from './hooks/useWeather';
+import SearchBar from './components/SearchBar';
+import WeatherIcon from './components/WeatherIcon';
+import Spinner from './components/Spinner';
+import { celsiusToFahrenheit } from './utils/convertTemp';
 
 export default function App() {
-  // ----- state -----------------------------------------------------------
-  const [city, setCity] = useState('');
-  const [cityName, setCityName] = useState('Amman');
-  const [dateTimeText, setDateTimeText] = useState('Tuesday, 3 February 2026 · 12:46 PM');
-  const [tempValue, setTempValue] = useState(10);
-  const [desc, setDesc] = useState('—');
-  const [subDesc, setSubDesc] = useState('light intensity drizzle rain');
-  const [feelsLike, setFeelsLike] = useState(10);
-  const [humidity, setHumidity] = useState(93);
-  const [windSpeed, setWindSpeed] = useState(6);
-  const [status, setStatus] = useState('idle'); // idle | loading | empty | error
+  const [cityInput, setCityInput] = useState('');
+  const { weather, loading, error, unit, setUnit, searchCity, useCurrentLocation, resetSearch } = useWeather();
 
-  // ----- data fetching -----------------------------------------------------
-  const searchCity = () => {
-    const searchTarget = city.trim();
-
-    if (!searchTarget) {
-      setStatus('empty');
-      return;
-    }
-
-    setStatus('loading');
-
-    fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(searchTarget)}&appid=${API_KEY}&units=metric`
-    )
-      .then((res) => {
-        if (!res.ok) throw new Error('City not found');
-        return res.json();
-      })
-      .then((data) => {
-        setCityName(data.name);
-        setTempValue(Math.round(data.main.temp));
-        setDesc(data.weather[0].main);
-        setSubDesc(data.weather[0].description);
-        setFeelsLike(Math.round(data.main.feels_like));
-        setHumidity(data.main.humidity);
-        setWindSpeed(data.wind.speed);
-        setDateTimeText(getLocalTime(data.timezone));
-        setCity('');
-        setStatus('idle');
-      })
-      .catch(() => setStatus('error'));
+  const handleSearch = () => {
+    searchCity(cityInput);
+    setCityInput('');
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') searchCity();
+    if (e.key === 'Enter') handleSearch();
   };
 
-  const getLocalTime = (timezoneOffsetInSeconds) => {
-    const utcDate = new Date();
-    const localDate = new Date(
-      utcDate.getTime() + utcDate.getTimezoneOffset() * 60000 + timezoneOffsetInSeconds * 1000
-    );
-    const dateFmt = localDate.toLocaleDateString('en-US', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
-    const timeFmt = localDate.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    });
-    return `${dateFmt} · ${timeFmt}`;
+  const handleReset = () => {
+    setCityInput('');
+    resetSearch();
   };
 
-  // ----- view --------------------------------------------------------------
+  // temps are stored in Celsius, converted here for display only
+  const displayTemp = (celsius) => (unit === 'C' ? celsius : celsiusToFahrenheit(celsius));
+
   return (
-    <div className="station">
-      <div className="panel">
-        <header className="panel-header">
-          <div className="plate">
-            <span className="plate-eyebrow">Meteorograph No. 01</span>
-            <h1 className="plate-city">{cityName}</h1>
-            <p className="plate-time">{dateTimeText}</p>
-          </div>
-
-          <div className="controls">
-            <div className="search-slot">
-              <input
-                type="text"
-                className="city-input"
-                placeholder="Enter a city…"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                onKeyDown={handleKeyDown}
-                aria-label="City name"
-              />
-              <button className="btn btn-search" onClick={searchCity} aria-label="Search">
-                <IconSearch />
-              </button>
-            </div>
-            <button className="btn btn-locate" aria-label="Use current location">
-              <IconLocation />
-            </button>
-          </div>
-        </header>
-
-        {status === 'error' && (
-          <p className="status-message" role="alert">
-            City not found — check the spelling and try again.
-          </p>
-        )}
-        {status === 'empty' && (
-          <p className="status-message" role="alert">
-            Enter a city name first.
-          </p>
-        )}
-
-        <div className="readout-deck">
-          <div className="gauge-column">
-            <Gauge value={tempValue} min={-20} max={50} unit="°C" />
-            <div className="condition">
-              <h2 className="condition-title">{desc}</h2>
-              <p className="condition-sub">{subDesc}</p>
-            </div>
-          </div>
-
-          <div className="tape-column">
-            <ReadoutBar
-              icon={<IconThermometer />}
-              label="Feels like"
-              value={feelsLike}
-              unit="°C"
-              ratio={(feelsLike + 20) / 70}
-            />
-            <ReadoutBar icon={<IconHumidity />} label="Humidity" value={humidity} unit="%" ratio={humidity / 100} />
-            <ReadoutBar icon={<IconWind />} label="Wind" value={windSpeed} unit=" m/s" ratio={windSpeed / 20} />
-          </div>
+    <div className="container">
+      <div className="top">
+        <div>
+          <h1>{weather ? weather.cityName : 'Search a city'}</h1>
+          <p>{weather ? weather.dateTimeText : 'to see the weather'}</p>
         </div>
 
-        <footer className="panel-footer">
-          <span>Instrument calibrated for portfolio display</span>
-          <span>Data via OpenWeatherMap</span>
-        </footer>
+        <SearchBar
+          city={cityInput}
+          onCityChange={(e) => setCityInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onSearch={handleSearch}
+          onReset={handleReset}
+          onLocate={useCurrentLocation}
+        />
+      </div>
+
+      {error && <p className="error">{error}</p>}
+
+      <div className="bottom">
+        {loading && <Spinner />}
+
+        {!loading && weather && (
+          <>
+            <div className="temp">
+              <h1 className="tempValue">{displayTemp(weather.tempC)}</h1>
+              <p className="desc">{weather.description}</p>
+              <div>
+                <button className={unit === 'C' ? 'unitBtn active' : 'unitBtn'} onClick={() => setUnit('C')}>
+                  °C
+                </button>{' '}
+                |{' '}
+                <button className={unit === 'F' ? 'unitBtn active' : 'unitBtn'} onClick={() => setUnit('F')}>
+                  °F
+                </button>
+                <p>{weather.subDescription}</p>
+              </div>
+            </div>
+
+            <div className="weather-icon">
+              <WeatherIcon condition={weather.description} className="icon" />
+              <ul className="weather-info">
+                <li>
+                  <img src="images/feels-like.svg" alt="" />
+                  Feels like: {displayTemp(weather.feelsLikeC)}°{unit}
+                </li>
+                <li>
+                  <img src="images/humidity.svg" alt="" />
+                  Humidity: {weather.humidity}%
+                </li>
+                <li>
+                  <img src="images/wind.svg" alt="" />
+                  Wind: {weather.windSpeed} km/h
+                </li>
+              </ul>
+            </div>
+          </>
+        )}
+
+        {!loading && !weather && <p className="placeholder">No weather data yet — search for a city above.</p>}
       </div>
     </div>
   );
