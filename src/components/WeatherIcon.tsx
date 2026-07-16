@@ -1,7 +1,9 @@
+import type { SVGProps } from 'react';
+
 // Small hand-drawn line icons so we don't pull in an icon library
 // just for six weather conditions.
 
-function SunnyIcon(props) {
+function SunnyIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" {...props}>
       <circle cx="12" cy="12" r="4.5" />
@@ -10,7 +12,7 @@ function SunnyIcon(props) {
   );
 }
 
-function CloudyIcon(props) {
+function CloudyIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
       <path d="M7 18a4.5 4.5 0 0 1-.5-8.98A5.5 5.5 0 0 1 17.3 9 4 4 0 0 1 17 18H7Z" />
@@ -18,7 +20,7 @@ function CloudyIcon(props) {
   );
 }
 
-function RainyIcon(props) {
+function RainyIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
       <path d="M7 15a4.5 4.5 0 0 1-.5-8.98A5.5 5.5 0 0 1 17.3 6 4 4 0 0 1 17 15H7Z" />
@@ -27,7 +29,7 @@ function RainyIcon(props) {
   );
 }
 
-function StormIcon(props) {
+function StormIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
       <path d="M7 13a4.5 4.5 0 0 1-.5-8.98A5.5 5.5 0 0 1 17.3 4 4 4 0 0 1 17 13H7Z" />
@@ -36,7 +38,7 @@ function StormIcon(props) {
   );
 }
 
-function SnowyIcon(props) {
+function SnowyIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
       <path d="M7 14a4.5 4.5 0 0 1-.5-8.98A5.5 5.5 0 0 1 17.3 5 4 4 0 0 1 17 14H7Z" />
@@ -45,7 +47,7 @@ function SnowyIcon(props) {
   );
 }
 
-function FoggyIcon(props) {
+function FoggyIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" {...props}>
       <path d="M5 9h11M4 13h16M4 17h13M15 13a4 4 0 1 0-7.5-1.9" />
@@ -53,8 +55,13 @@ function FoggyIcon(props) {
   );
 }
 
-export default function WeatherIcon({ condition, className }) {
-  const c = (condition || '').toLowerCase();
+interface WeatherIconProps {
+  condition?: string;
+  className?: string;
+}
+
+export default function WeatherIcon({ condition = '', className }: WeatherIconProps) {
+  const c = condition.toLowerCase();
 
   if (c.includes('clear')) return <SunnyIcon className={className} />;
   if (c.includes('cloud')) return <CloudyIcon className={className} />;

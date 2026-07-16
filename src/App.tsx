@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { ChangeEvent, KeyboardEvent } from 'react';
 import './App.css';
 import useWeather from './hooks/useWeather';
 import SearchBar from './components/SearchBar';
@@ -15,7 +16,7 @@ export default function App() {
     setCityInput('');
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') handleSearch();
   };
 
@@ -25,7 +26,7 @@ export default function App() {
   };
 
   // temps are stored in Celsius, converted here for display only
-  const displayTemp = (celsius) => (unit === 'C' ? celsius : celsiusToFahrenheit(celsius));
+  const displayTemp = (celsius: number) => (unit === 'C' ? celsius : celsiusToFahrenheit(celsius));
 
   return (
     <div className="container">
@@ -37,7 +38,7 @@ export default function App() {
 
         <SearchBar
           city={cityInput}
-          onCityChange={(e) => setCityInput(e.target.value)}
+          onCityChange={(e: ChangeEvent<HTMLInputElement>) => setCityInput(e.target.value)}
           onKeyDown={handleKeyDown}
           onSearch={handleSearch}
           onReset={handleReset}
@@ -71,15 +72,15 @@ export default function App() {
               <WeatherIcon condition={weather.description} className="icon" />
               <ul className="weather-info">
                 <li>
-                  <img src="images/feels-like.svg" alt="" />
+                  <img src="/images/feels-like.svg" alt="" />
                   Feels like: {displayTemp(weather.feelsLikeC)}°{unit}
                 </li>
                 <li>
-                  <img src="images/humidity.svg" alt="" />
+                  <img src="/images/humidity.svg" alt="" />
                   Humidity: {weather.humidity}%
                 </li>
                 <li>
-                  <img src="images/wind.svg" alt="" />
+                  <img src="/images/wind.svg" alt="" />
                   Wind: {weather.windSpeed} km/h
                 </li>
               </ul>

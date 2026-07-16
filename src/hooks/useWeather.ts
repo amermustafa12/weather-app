@@ -1,33 +1,36 @@
 import { useState, useEffect, useCallback } from 'react';
 import { fetchWeatherByCity, fetchWeatherByCoords } from '../utils/api';
 import { mapWeatherData } from '../utils/weatherMapper';
+import type { OpenWeatherResponse, WeatherData, TemperatureUnit } from '../types/weather';
 
 const LAST_CITY_KEY = 'lastCity';
 
-const ERROR_MESSAGES = {
+const ERROR_MESSAGES: Record<string, string> = {
   CITY_NOT_FOUND: 'City not found, please check the spelling!',
   SERVER_ERROR: 'Something went wrong on the server, please try again later.',
   NETWORK_ERROR: 'Network error, please check your internet connection.',
 };
 
 export default function useWeather() {
-  const [weather, setWeather] = useState(null);
+  const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [unit, setUnit] = useState('C');
+  const [unit, setUnit] = useState<TemperatureUnit>('C');
 
-  const applyWeatherData = (data) => {
-    setWeather(mapWeatherData(data));
+  const applyWeatherData = (data: OpenWeatherResponse) => {
+    const mapped = mapWeatherData(data);
+    setWeather(mapped);
     setError('');
-    localStorage.setItem(LAST_CITY_KEY, data.name);
+    localStorage.setItem(LAST_CITY_KEY, mapped.cityName);
   };
 
-  const handleError = (err) => {
+  const handleError = (err: unknown) => {
     setWeather(null);
-    setError(ERROR_MESSAGES[err.message] || 'Something went wrong, please try again.');
+    const message = err instanceof Error ? err.message : '';
+    setError(ERROR_MESSAGES[message] || 'Something went wrong, please try again.');
   };
 
-  const searchCity = useCallback(async (cityName) => {
+  const searchCity = useCallback(async (cityName: string) => {
     const target = cityName.trim();
     if (!target) {
       setError('Please enter a city name');
@@ -45,7 +48,7 @@ export default function useWeather() {
     }
   }, []);
 
-  const searchByCoords = useCallback(async (lat, lon) => {
+  const searchByCoords = useCallback(async (lat: number, lon: number) => {
     setLoading(true);
     try {
       const data = await fetchWeatherByCoords(lat, lon);

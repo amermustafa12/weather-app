@@ -1,4 +1,4 @@
-export function formatLocalTime(timezoneOffsetInSeconds) {
+export function formatLocalTime(timezoneOffsetInSeconds: number): string {
   const utcDate = new Date();
   const localDate = new Date(
     utcDate.getTime() + utcDate.getTimezoneOffset() * 60000 + timezoneOffsetInSeconds * 1000

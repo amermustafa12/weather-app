@@ -1,8 +1,9 @@
 import { formatLocalTime } from './formatLocalTime';
+import type { OpenWeatherResponse, WeatherData } from '../types/weather';
 
 // Temperatures are kept in Celsius here; the UI converts to Fahrenheit
 // on the fly so switching units never needs a new API call.
-export function mapWeatherData(data) {
+export function mapWeatherData(data: OpenWeatherResponse): WeatherData {
   return {
     cityName: data.name,
     tempC: Math.round(data.main.temp),
