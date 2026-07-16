@@ -1,7 +1,7 @@
 import type { OpenWeatherResponse } from '../types/weather';
 
 const API_KEY = '702199ae130477942968a69f0f7b722b';
-لهconst BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
+const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
 
 // Turns a response into either JSON data or a categorized error,
 // so both fetch functions below can share the same error handling.
