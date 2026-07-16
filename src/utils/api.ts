@@ -1,6 +1,6 @@
 import type { OpenWeatherResponse } from '../types/weather';
 
-const API_KEY = import.meta.env.VITE_API_KEY;
+const API_KEY = '702199ae130477942968a69f0f7b722b';
 const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
 
 // Turns a response into either JSON data or a categorized error,
