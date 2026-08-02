@@ -247,11 +247,32 @@ ul {
 
   .weather-info {
     text-align: left;
+    width: 100%;
+    margin: 8px 0 0;
+    padding: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .weather-info li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 16px;
+  }
+
+  .weather-info li img {
+    width: 28px;
+    height: 28px;
+    padding: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
   }
 
   p,
-  .unitBtn,
-  ul {
+  .unitBtn {
     font-size: 16px;
   }
 
