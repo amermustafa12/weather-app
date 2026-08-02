@@ -195,28 +195,81 @@ ul {
   }
 }
 
-@media (max-width: 375px) {
+/* ------------------------------------------------------------------ */
+/* Mobile: card fills the screen properly + elements stack in a       */
+/* column instead of overlapping + inputs/buttons become tap-friendly */
+/* ------------------------------------------------------------------ */
+@media (max-width: 600px) {
+  body {
+    padding: 16px;
+  }
+
   .container {
-    padding: 24px 18px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 24px 20px;
     border-radius: 24px;
-    font-size: 20px;
+    font-size: 18px;
+  }
+
+  /* stack title block above the search controls instead of side by side */
+  .top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  /* stack temperature block above the icon/details block */
+  .bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 24px;
+  }
+
+  .temp {
+    flex-direction: column;
+    gap: 8px;
   }
 
   .temp h1 {
-    font-size: 42px;
+    font-size: 48px;
+  }
+
+  .weather-icon {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .weather-info {
+    text-align: left;
   }
 
   p,
   .unitBtn,
   ul {
-    font-size: 18px;
+    font-size: 16px;
   }
 
-  .buttons input {
-    width: 100%;
-  }
-
+  /* search controls: full width, stacked, easy to tap */
   .buttons {
+    flex-direction: column;
     width: 100%;
+  }
+
+  .buttons input,
+  .search,
+  .reset,
+  .location {
+    width: 100%;
+    min-height: 48px;
+    /* 16px min font-size stops iOS Safari from auto-zooming on focus */
+    font-size: 16px;
+  }
+
+  .location {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
