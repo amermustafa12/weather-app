@@ -335,32 +335,15 @@ body {
 }
 
 .weather-info li img {
-  width: 18px;
-  height: 18px;
-  padding: 7px;
+  width: 28px;
+  height: 28px;
+  padding: 6px;
   border-radius: 999px;
   background: rgba(234, 244, 255, 0.08);
   flex-shrink: 0;
 }
 
-/* ------------------------------------------------------------------ */
-/* Tablet / small desktop                                              */
-/* ------------------------------------------------------------------ */
-@media (min-width: 601px) {
-  .top {
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
 
-  .buttons {
-    flex-wrap: nowrap;
-  }
-
-  .buttons input {
-    flex: 1 1 160px;
-  }
-}
 
 /* ------------------------------------------------------------------ */
 /* Mobile: card fills the entire screen, edge to edge                  */
