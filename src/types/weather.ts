@@ -7,21 +7,33 @@ export interface WeatherData {
   feelsLikeC: number;
   humidity: number;
   windSpeed: number;
+  pressure: number;
+  visibilityKm: number;
+  sunrise: string;
+  sunset: string;
   dateTimeText: string;
 }
 
 // Minimal shape of the OpenWeatherMap "current weather" response —
-// only the fields this app actually reads.
+// only the fields this app actually reads. Pressure, visibility, and
+// sunrise/sunset all come back on this same endpoint already, so no
+// extra request is needed to show them.
 export interface OpenWeatherResponse {
   name: string;
   timezone: number;
+  visibility: number;
   main: {
     temp: number;
     feels_like: number;
     humidity: number;
+    pressure: number;
   };
   weather: { main: string; description: string }[];
   wind: { speed: number };
+  sys: {
+    sunrise: number;
+    sunset: number;
+  };
 }
 
 export type TemperatureUnit = 'C' | 'F';

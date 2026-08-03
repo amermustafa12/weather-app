@@ -1,155 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ------------------------------------------------------------------ */
+/* Design tokens                                                       */
+/* ------------------------------------------------------------------ */
+:root {
+  /* existing dark-navy identity, kept - no new hues introduced */
+  --navy-950: #060a1a;
+  --navy-900: #0b1330;
+  --blue-soft: #6f9bd1;
+  --ice: #bfe3f4;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.68);
+  --text-muted: rgba(255, 255, 255, 0.46);
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-bg-strong: rgba(255, 255, 255, 0.11);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.45);
+  --shadow-card: 0 4px 18px rgba(0, 0, 0, 0.25);
+  --danger: #ff9b90;
+
+  /* 8px spacing system */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 32px;
+  --radius-pill: 999px;
+
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  min-height: 100vh;
+  min-height: 100dvh;
   background-image: url(/images/fullpage-bg.png);
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
   justify-content: center;
   align-items: center;
-  display: flex;
-  flex-direction: column;
   overflow-x: hidden;
+  font-family: var(--font-ui);
+  color: var(--text-primary);
 }
 
-.container {
-  background-image: url(/images/background-night.png);
-  width: min(95%, 1100px);
-  background-position: center;
-  border-radius: 70px;
-  align-items: center;
-  gap: 20px;
-  font-size: 30px;
-  padding: 50px 70px;
-  color: azure;
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 20px;
-  min-height: 140px;
-}
-
-p {
-  color: #ced4da;
-  font-size: 25px;
-}
-
-.temp {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.temp h1 {
-  font-size: 80px;
-  font-weight: lighter;
-}
-
-.buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.buttons input {
-  background-color: lightblue;
-  border: none;
-  border-radius: 10px;
-  width: 200px;
-  max-width: 100%;
-  height: 40px;
-  padding: 0 12px;
-  font-size: 17px;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.search,
-.reset,
-.location {
-  background-color: lightblue;
-  border: none;
-  border-radius: 10px;
-  padding: 0 14px;
-  cursor: pointer;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.search:hover,
-.reset:hover,
-.location:hover {
-  filter: brightness(0.95);
-}
-
-ul {
-  list-style: none;
-  margin: 0;
-  padding-left: 0;
-  font-size: 25px;
-}
-
-.icon {
-  width: 90px;
-  height: 90px;
-  color: azure;
-}
-
-.weather-icon {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-/* looks like the original text links, but is now a real, working button */
-.unitBtn {
-  background: none;
-  border: none;
-  padding: 0;
-  color: #ced4da;
-  font-size: 25px;
-  font-family: Arial, Helvetica, sans-serif;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.unitBtn.active {
-  color: azure;
-  text-decoration: underline;
-}
-
-.error {
-  color: #ff8787;
-  font-size: 20px;
-}
-
-.placeholder {
-  font-size: 20px;
-}
-
-.spinner {
-  width: 44px;
-  height: 44px;
-  border: 4px solid rgba(255, 255, 255, 0.25);
-  border-top-color: azure;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 @keyframes spin {
@@ -159,45 +83,386 @@ ul {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spinner {
-    animation-duration: 1.6s;
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
 /* ------------------------------------------------------------------ */
-/* Responsive tweaks - keeps the same look, just scales down cleanly   */
+/* Card shell - glassmorphism                                          */
 /* ------------------------------------------------------------------ */
-@media (max-width: 1024px) {
-  .container {
-    padding: 40px 45px;
-    border-radius: 50px;
-    font-size: 26px;
+.container {
+  width: min(94%, 1200px);
+  margin: var(--space-5) auto;
+  background-image:
+    linear-gradient(160deg, rgba(11, 19, 48, 0.78) 0%, rgba(6, 10, 26, 0.9) 100%),
+    url(/images/background-night.png);
+  background-size: cover;
+  background-position: center;
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-soft);
+  animation: fadeInUp 0.5s var(--ease) both;
+}
+
+/* ------------------------------------------------------------------ */
+/* Header + search                                                     */
+/* ------------------------------------------------------------------ */
+.top {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--glass-border);
+  margin-bottom: var(--space-4);
+}
+
+.header-text h1 {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.header-text p {
+  margin: var(--space-1) 0 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.cityInput {
+  flex: 1 1 auto;
+  min-width: 140px;
+  height: 48px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--space-2);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 15px;
+}
+
+.cityInput::placeholder {
+  color: var(--text-muted);
+}
+
+.search,
+.reset,
+.location {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  height: 48px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.15s var(--ease), background 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+/* row 1: input + search icon share a row */
+.search {
+  flex: 0 0 auto;
+  background: linear-gradient(160deg, var(--ice) 0%, var(--blue-soft) 100%);
+  color: var(--navy-950);
+  border: none;
+}
+
+/* row 2 and row 3: reset and locate each take their own full-width row */
+.reset,
+.location {
+  flex: 1 1 100%;
+}
+
+.search:hover,
+.reset:hover,
+.location:hover {
+  transform: translateY(-2px);
+  background: var(--glass-bg-strong);
+}
+
+.search:hover {
+  background: linear-gradient(160deg, var(--ice) 0%, var(--blue-soft) 100%);
+  filter: brightness(1.06);
+}
+
+.search:active,
+.reset:active,
+.location:active {
+  transform: scale(0.97);
+}
+
+.search:focus-visible,
+.reset:focus-visible,
+.location:focus-visible,
+.cityInput:focus-visible {
+  outline: 2px solid var(--ice);
+  outline-offset: 2px;
+}
+
+.location img {
+  width: 18px;
+  height: 18px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Error / placeholder / loading states                                */
+/* ------------------------------------------------------------------ */
+.error {
+  margin: 0 0 var(--space-3);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 155, 144, 0.12);
+  border: 1px solid rgba(255, 155, 144, 0.3);
+  color: var(--danger);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.placeholder {
+  margin: var(--space-5) 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  text-align: center;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  margin: var(--space-5) auto;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--ice);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero: icon + temperature                                            */
+/* ------------------------------------------------------------------ */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-2);
+}
+
+.icon {
+  width: 110px;
+  height: 110px;
+  color: var(--ice);
+  animation: float 4s ease-in-out infinite;
+}
+
+.temp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tempValue {
+  margin: 0;
+  font-size: clamp(72px, 12vw, 120px);
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.desc {
+  margin: var(--space-1) 0 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.sub-desc {
+  margin: 2px 0 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
+.unit-toggle {
+  display: inline-flex;
+  gap: 4px;
+  margin-top: var(--space-2);
+  padding: 4px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+}
+
+.unitBtn {
+  border: none;
+  background: none;
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.unitBtn.active {
+  background: var(--ice);
+  color: var(--navy-950);
+}
+
+.unitBtn:focus-visible {
+  outline: 2px solid var(--ice);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Detail cards                                                        */
+/* ------------------------------------------------------------------ */
+.weather-info {
+  list-style: none;
+  margin: var(--space-5) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-2);
+}
+
+.detail-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  animation: fadeInUp 0.5s var(--ease) both;
+  transition: transform 0.25s var(--ease), background 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+.detail-card:hover,
+.detail-card:focus-within {
+  transform: translateY(-4px);
+  background: var(--glass-bg-strong);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35);
+}
+
+.detail-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--ice);
+  flex-shrink: 0;
+}
+
+.detail-card-icon img {
+  width: 20px;
+  height: 20px;
+}
+
+.detail-card-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.detail-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+  min-width: 0;
+}
+
+.detail-label {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.detail-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ------------------------------------------------------------------ */
+/* Desktop (1024px+): header and search sit side by side,              */
+/* icon and temperature sit side by side                               */
+/* ------------------------------------------------------------------ */
+@media (min-width: 1024px) {
+  .top {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
   }
 
-  .temp h1 {
-    font-size: 64px;
+  .header-text {
+    padding-top: var(--space-1);
+  }
+
+  .buttons {
+    flex: 0 0 380px;
+  }
+
+  .hero {
+    flex-direction: row;
+    justify-content: center;
+    text-align: left;
+    gap: var(--space-4);
+  }
+
+  .temp {
+    align-items: flex-start;
+  }
+
+  .unit-toggle {
+    margin-left: 0;
   }
 }
 
+/* ------------------------------------------------------------------ */
+/* Tablet (768px)                                                       */
+/* ------------------------------------------------------------------ */
 @media (max-width: 768px) {
   .container {
-    padding: 32px 30px;
-    border-radius: 36px;
-  }
-
-  .temp h1 {
-    font-size: 54px;
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
   }
 
   .icon {
-    width: 70px;
-    height: 70px;
+    width: 90px;
+    height: 90px;
   }
 }
 
 /* ------------------------------------------------------------------ */
-/* Mobile: card fills the screen properly + elements stack in a       */
-/* column instead of overlapping + inputs/buttons become tap-friendly */
+/* Mobile: card fills the screen edge to edge                          */
 /* ------------------------------------------------------------------ */
 @media (max-width: 600px) {
   body {
@@ -208,104 +473,57 @@ ul {
     width: 100vw;
     min-height: 100dvh;
     margin: 0;
-    padding: max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));
+    padding: max(var(--space-3), env(safe-area-inset-top)) var(--space-3) max(var(--space-3), env(safe-area-inset-bottom));
     border-radius: 0;
-    font-size: 18px;
     display: flex;
     flex-direction: column;
-    /* was "center" - with content taller than the screen that pushed the
-       top of the card above the viewport, forcing an awkward scroll-up
-       just to see the title. Starting from the top reads naturally. */
     justify-content: flex-start;
-    gap: 16px;
+    gap: var(--space-3);
   }
 
-  /* stack title block above the search controls instead of side by side */
   .top {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
+    gap: var(--space-2);
+    padding-bottom: var(--space-2);
+    margin-bottom: 0;
   }
 
-  /* stack temperature block above the icon/details block */
-  .bottom {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 16px;
+  .tempValue {
+    font-size: clamp(64px, 18vw, 84px);
   }
 
-  .temp {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .temp h1 {
-    font-size: 48px;
-  }
-
-  .weather-icon {
-    flex-direction: column;
-    text-align: center;
+  .icon {
+    width: 76px;
+    height: 76px;
   }
 
   .weather-info {
-    text-align: left;
-    width: 100%;
-    margin: 8px 0 0;
-    padding: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .weather-info li {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 4px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    font-size: 16px;
-  }
-
-  .weather-info li img {
-    width: 28px;
-    height: 28px;
-    padding: 6px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
-    flex-shrink: 0;
-  }
-
-  p,
-  .unitBtn {
-    font-size: 16px;
-  }
-
-  /* search controls: input on its own row, buttons share the next row
-     instead of 4 stacked full-height rows - gets to the result faster */
-  .buttons {
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-  }
-
-  .buttons input {
-    flex: 1 1 100%;
+  .cityInput,
+  .search,
+  .reset,
+  .location {
+    /* comfortable, unambiguous touch targets */
     min-height: 48px;
     /* 16px min font-size stops iOS Safari from auto-zooming on focus */
     font-size: 16px;
   }
+}
 
-  .search,
-  .reset,
-  .location {
-    flex: 1 1 0;
-    min-height: 48px;
-    font-size: 16px;
+/* ------------------------------------------------------------------ */
+/* Small mobile (~320-360px)                                           */
+/* ------------------------------------------------------------------ */
+@media (max-width: 360px) {
+  .header-text h1 {
+    font-size: 26px;
   }
 
-  .location {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .weather-info {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-value {
+    font-size: 15px;
   }
 }

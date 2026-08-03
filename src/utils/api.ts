@@ -1,5 +1,8 @@
 import type { OpenWeatherResponse } from '../types/weather';
 
+const API_KEY = import.meta.env.VITE_API_KEY;
+const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
+
 // Turns a response into either JSON data or a categorized error,
 // so both fetch functions below can share the same error handling.
 async function handleResponse(res: Response): Promise<OpenWeatherResponse> {
@@ -23,7 +26,7 @@ function asKnownError(err: unknown): Error {
 
 export async function fetchWeatherByCity(city: string): Promise<OpenWeatherResponse> {
   try {
-    const res = await fetch(`/.netlify/functions/weather?city=${encodeURIComponent(city)}`);
+    const res = await fetch(`${BASE_URL}?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`);
     return await handleResponse(res);
   } catch (err) {
     throw asKnownError(err);
@@ -32,7 +35,7 @@ export async function fetchWeatherByCity(city: string): Promise<OpenWeatherRespo
 
 export async function fetchWeatherByCoords(lat: number, lon: number): Promise<OpenWeatherResponse> {
   try {
-    const res = await fetch(`/.netlify/functions/weather?lat=${lat}&lon=${lon}`);
+    const res = await fetch(`${BASE_URL}?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`);
     return await handleResponse(res);
   } catch (err) {
     throw asKnownError(err);

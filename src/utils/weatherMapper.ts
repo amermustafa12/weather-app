@@ -1,4 +1,4 @@
-import { formatLocalTime } from './formatLocalTime';
+import { formatLocalTime, formatClockTime } from './formatLocalTime';
 import type { OpenWeatherResponse, WeatherData } from '../types/weather';
 
 // Temperatures are kept in Celsius here; the UI converts to Fahrenheit
@@ -12,6 +12,10 @@ export function mapWeatherData(data: OpenWeatherResponse): WeatherData {
     feelsLikeC: Math.round(data.main.feels_like),
     humidity: data.main.humidity,
     windSpeed: data.wind.speed,
+    pressure: data.main.pressure,
+    visibilityKm: Math.round((data.visibility / 1000) * 10) / 10,
+    sunrise: formatClockTime(data.sys.sunrise, data.timezone),
+    sunset: formatClockTime(data.sys.sunset, data.timezone),
     dateTimeText: formatLocalTime(data.timezone),
   };
 }
